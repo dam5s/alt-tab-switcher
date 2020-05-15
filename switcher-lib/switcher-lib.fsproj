@@ -1,0 +1,14 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+
+    <PropertyGroup>
+        <TargetFramework>netcoreapp5.0</TargetFramework>
+        <UseWPF>true</UseWPF>
+        <RootNamespace>SwitcherLib</RootNamespace>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <Compile Include="AppProcesses.fs" />
+        <Compile Include="MainWindowHelper.fs" />
+    </ItemGroup>
+
+</Project>

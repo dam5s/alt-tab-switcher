@@ -1,8 +1,22 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "switcher-app", "switcher-app\switcher-app.csproj", "{3E656D77-6ED7-4149-BD7D-D032F1FB826A}"
+EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "switcher-lib", "switcher-lib\switcher-lib.fsproj", "{3A99306D-50CB-4BE4-9102-5DD71649A004}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{3E656D77-6ED7-4149-BD7D-D032F1FB826A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3E656D77-6ED7-4149-BD7D-D032F1FB826A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3E656D77-6ED7-4149-BD7D-D032F1FB826A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3E656D77-6ED7-4149-BD7D-D032F1FB826A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3A99306D-50CB-4BE4-9102-5DD71649A004}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3A99306D-50CB-4BE4-9102-5DD71649A004}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3A99306D-50CB-4BE4-9102-5DD71649A004}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3A99306D-50CB-4BE4-9102-5DD71649A004}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
