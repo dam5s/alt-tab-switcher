@@ -20,7 +20,7 @@ let private newRow _ =
     c
 
 let private addColumn (grid: Grid) _ =
-    grid.ColumnDefinitions.Add (newColumn ())
+    grid.ColumnDefinitions.Add(newColumn ())
 
 let private addProcess (grid: Grid) (index: int) (app: AppWindow) =
     let text = TextBlock()
@@ -34,7 +34,7 @@ let private addProcess (grid: Grid) (index: int) (app: AppWindow) =
     text.Foreground <- SolidColorBrush(Color.FromScRgb(1.0f, 1.0f, 1.0f, 1.0f))
     text.VerticalAlignment <- VerticalAlignment.Center
 
-    Grid.SetColumn (text, index)
+    Grid.SetColumn(text, index)
 
     grid.Children.Add text |> ignore
 
@@ -45,11 +45,12 @@ let configure (window: Window, grid: Grid) =
     window.WindowStyle <- WindowStyle.None
     window.ShowInTaskbar <- true
     window.AllowsTransparency <- true
+    window.WindowStartupLocation <- WindowStartupLocation.CenterScreen
     window.Background <- SolidColorBrush(Color.FromScRgb(0.9f, 0.0f, 0.0f, 0.0f))
     window.Width <- (cellWidth * float appWindows.Length) + padding * 2.0
     window.Height <- cellHeight + padding * 2.0
 
-    grid.RowDefinitions.Add (newRow ())
+    grid.RowDefinitions.Add(newRow ())
     grid.Margin <- Thickness(padding)
 
     appWindows |> Seq.iter (addColumn grid)
