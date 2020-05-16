@@ -3,7 +3,7 @@
 open System.Windows
 open System.Windows.Controls
 open System.Windows.Media
-open SwitcherLib.AppProcesses
+open SwitcherLib.AppWindows
 
 let private cellWidth = 200.0
 let private cellHeight = 200.0
@@ -22,7 +22,7 @@ let private newRow _ =
 let private addColumn (grid: Grid) _ =
     grid.ColumnDefinitions.Add (newColumn ())
 
-let private addProcess (grid: Grid) (index: int) (app: AppProcess) =
+let private addProcess (grid: Grid) (index: int) (app: AppWindows) =
     let text = TextBlock()
     text.Text <- app.Title
     text.Width <- cellWidth
@@ -39,21 +39,21 @@ let private addProcess (grid: Grid) (index: int) (app: AppProcess) =
     grid.Children.Add text |> ignore
 
 let configure (window: Window, grid: Grid) =
-    let p = AppProcesses.get ()
+    let appWindows = AppWindows.get ()
 
     window.Title <- "Alt-Tab Switcher"
     window.WindowStyle <- WindowStyle.None
     window.ShowInTaskbar <- true
     window.AllowsTransparency <- true
     window.Background <- SolidColorBrush(Color.FromScRgb(0.8f, 0.0f, 0.0f, 0.0f))
-    window.Width <- (cellWidth * float p.Length) + padding * 2.0
+    window.Width <- (cellWidth * float appWindows.Length) + padding * 2.0
     window.Height <- cellHeight + padding * 2.0
     window.WindowStartupLocation <- WindowStartupLocation.CenterScreen
 
     grid.RowDefinitions.Add (newRow ())
     grid.Margin <- Thickness(padding)
 
-    p |> Seq.iter (addColumn grid)
-    p |> Seq.iteri (addProcess grid)
+    appWindows |> Seq.iter (addColumn grid)
+    appWindows |> Seq.iteri (addProcess grid)
 
     ()
