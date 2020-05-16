@@ -20,12 +20,15 @@ module private Native =
     extern int GetWindowText(IntPtr hWnd, StringBuilder strText, int maxCount)
 
     [<DllImport("user32.dll", SetLastError = true)>]
-    extern uint32 GetWindowThreadProcessId(IntPtr hWnd, [<Out>] uint32 processId)
+    extern uint32 GetWindowThreadProcessId(IntPtr hWnd, [<Out>] uint32& processId)
 
     [<DllImport("user32.dll")>]
     extern bool IsWindowVisible(IntPtr hWnd)
 
-type WindowHandle = private WindowHandle of IntPtr
+    [<DllImport("user32.dll")>]
+    extern void SwitchToThisWindow(IntPtr hWnd, bool usingAltTab)
+
+type WindowHandle = private | WindowHandle of IntPtr
 
 [<RequireQualifiedAccess>]
 module WindowHandle =
@@ -40,24 +43,26 @@ module WindowHandle =
 
     let text (handle: WindowHandle) =
         let length = textLength handle
-        if (length = 0)
-            then ""
-            else readText length handle
-            
-    let processId (WindowHandle ptr): uint32 =
+        if (length = 0) then "" else readText length handle
+
+    let processId (WindowHandle ptr): int =
         let mutable id = uint32 0
-        Native.GetWindowThreadProcessId(ptr, id) |> ignore
-        id
+        Native.GetWindowThreadProcessId(ptr, &id) |> ignore
+        int id
 
     let isVisible (WindowHandle ptr) =
         Native.IsWindowVisible ptr
 
+    let switchTo (WindowHandle ptr) =
+        Native.SwitchToThisWindow(ptr, true) |> ignore
+
     let all (): WindowHandle list =
         let mutable windows: WindowHandle list = []
 
-        let proc = fun ptr _ ->
-            windows <- WindowHandle ptr :: windows
-            Native.EnumWindowsContinueEnumerating
+        let proc =
+            fun ptr _ ->
+                windows <- WindowHandle ptr :: windows
+                Native.EnumWindowsContinueEnumerating
 
         Native.EnumWindows(Native.EnumWindowsProc(proc), IntPtr.Zero) |> ignore
 

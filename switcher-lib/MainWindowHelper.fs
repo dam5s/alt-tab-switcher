@@ -22,9 +22,9 @@ let private newRow _ =
 let private addColumn (grid: Grid) _ =
     grid.ColumnDefinitions.Add (newColumn ())
 
-let private addProcess (grid: Grid) (index: int) (app: AppWindows) =
+let private addProcess (grid: Grid) (index: int) (app: AppWindow) =
     let text = TextBlock()
-    text.Text <- app.Title
+    text.Text <- sprintf "%s\n%d - %s" app.Title app.ProcessId app.ProcessName
     text.Width <- cellWidth
     text.Padding <- Thickness(padding, 0.0, padding, 0.0)
     text.FontFamily <- FontFamily("Trebuchet MS")
@@ -45,10 +45,9 @@ let configure (window: Window, grid: Grid) =
     window.WindowStyle <- WindowStyle.None
     window.ShowInTaskbar <- true
     window.AllowsTransparency <- true
-    window.Background <- SolidColorBrush(Color.FromScRgb(0.8f, 0.0f, 0.0f, 0.0f))
+    window.Background <- SolidColorBrush(Color.FromScRgb(0.9f, 0.0f, 0.0f, 0.0f))
     window.Width <- (cellWidth * float appWindows.Length) + padding * 2.0
     window.Height <- cellHeight + padding * 2.0
-    window.WindowStartupLocation <- WindowStartupLocation.CenterScreen
 
     grid.RowDefinitions.Add (newRow ())
     grid.Margin <- Thickness(padding)
