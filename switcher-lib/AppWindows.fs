@@ -9,23 +9,24 @@ type AppWindow =
       ProcessId: int
       ProcessName: string }
 
-let private createAppWindow title (handle: WindowHandle) =
-    let procId = WindowHandle.processId handle
-    let proc = Process.GetProcessById procId
+let private createAppWindow (handle: WindowHandle) =
+    let pid = handle.ProcessId()
 
-    { Title = title
+    { Title = handle.Text()
       Handle = handle
-      ProcessId = procId
-      ProcessName = proc.ProcessName }
+      ProcessId = pid
+      ProcessName = Process.GetProcessById(pid).ProcessName }
 
-let private createAppWindowIfTitleNotEmpty (handle: WindowHandle) =
-    let title = WindowHandle.text handle
+// Stole this from PowerToys
+let private isAltTabWorthy (handle: WindowHandle) =
+    handle.IsWindow() && handle.IsVisible() && (not (handle.IsToolWindow()) || handle.IsAppWindow())
+    && not (handle.TaskListDeleted()) && handle.ClassName() <> "Windows.UI.Core.CoreWindow" && handle.Text() <> ""
 
-    match title with
-    | "" -> None
-    | title -> Some(createAppWindow title handle)
+let private isNotApplicationFrameHost app =
+    app.ProcessName <> "ApplicationFrameHost"
 
 let get () =
     WindowHandle.all ()
-    |> List.filter WindowHandle.isVisible
-    |> List.choose createAppWindowIfTitleNotEmpty
+    |> List.filter isAltTabWorthy
+    |> List.map createAppWindow
+    |> List.filter isNotApplicationFrameHost

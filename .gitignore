@@ -2,3 +2,4 @@ bin
 obj
 *.iml
 .idea
+*.DotSettings.user

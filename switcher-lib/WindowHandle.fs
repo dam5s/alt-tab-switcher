@@ -1,61 +1,48 @@
 ﻿module SwitcherLib.WindowHandle
 
 open System
-open System.Runtime.InteropServices
 open System.Text
+open SwitcherLib.WindowNativeInterop
 
-[<RequireQualifiedAccess>]
-module private Native =
-    type EnumWindowsProc = delegate of IntPtr * IntPtr -> bool
-
-    let EnumWindowsContinueEnumerating = true
-
-    [<DllImport("user32.dll")>]
-    extern bool EnumWindows(EnumWindowsProc enumProc, IntPtr lParam)
-
-    [<DllImport("user32.dll", CharSet = CharSet.Unicode)>]
-    extern int GetWindowTextLength(IntPtr hWnd)
-
-    [<DllImport("user32.dll", CharSet = CharSet.Unicode)>]
-    extern int GetWindowText(IntPtr hWnd, StringBuilder strText, int maxCount)
-
-    [<DllImport("user32.dll", SetLastError = true)>]
-    extern uint32 GetWindowThreadProcessId(IntPtr hWnd, [<Out>] uint32& processId)
-
-    [<DllImport("user32.dll")>]
-    extern bool IsWindowVisible(IntPtr hWnd)
-
-    [<DllImport("user32.dll")>]
-    extern void SwitchToThisWindow(IntPtr hWnd, bool usingAltTab)
-
-type WindowHandle = private | WindowHandle of IntPtr
-
-[<RequireQualifiedAccess>]
-module WindowHandle =
-
-    let private textLength (WindowHandle ptr) =
+type WindowHandle(ptr: IntPtr) =
+    let textLength () =
         Native.GetWindowTextLength(ptr)
 
-    let private readText (length: int) (WindowHandle ptr) =
+    let readText (length: int) =
         let builder = StringBuilder(length)
         Native.GetWindowText(ptr, builder, builder.Capacity + 1) |> ignore
         builder.ToString()
 
-    let text (handle: WindowHandle) =
-        let length = textLength handle
-        if (length = 0) then "" else readText length handle
+    member this.Text() =
+        let length = textLength ()
+        if (length = 0) then "" else readText length
 
-    let processId (WindowHandle ptr): int =
+    member this.ProcessId() =
         let mutable id = uint32 0
         Native.GetWindowThreadProcessId(ptr, &id) |> ignore
         int id
 
-    let isVisible (WindowHandle ptr) =
-        Native.IsWindowVisible ptr
+    member this.ClassName() =
+        let builder = StringBuilder(300)
+        Native.GetClassName(ptr, builder, builder.MaxCapacity) |> ignore
+        builder.ToString()
 
-    let switchTo (WindowHandle ptr) =
-        Native.SwitchToThisWindow(ptr, true) |> ignore
+    member this.IsWindow() = Native.IsWindow ptr
 
+    member this.IsVisible() = Native.IsWindowVisible ptr
+
+    member this.IsAppWindow() =
+        Native.GetWindowLong(ptr, Native.GWL_EXSTYLE) &&& Native.WS_EX_APPWINDOW = Native.WS_EX_APPWINDOW
+
+    member this.IsToolWindow() =
+        Native.GetWindowLong(ptr, Native.GWL_EXSTYLE) &&& Native.WS_EX_TOOLWINDOW = Native.WS_EX_TOOLWINDOW
+
+    member this.TaskListDeleted() = Native.GetProp(ptr, "ITaskList_Deleted") <> IntPtr.Zero
+
+    member this.SwitchTo() = Native.SwitchToThisWindow(ptr, true) |> ignore
+
+[<RequireQualifiedAccess>]
+module WindowHandle =
     let all (): WindowHandle list =
         let mutable windows: WindowHandle list = []
 
