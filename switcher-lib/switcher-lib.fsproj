@@ -9,8 +9,8 @@
     <ItemGroup>
         <Compile Include="WindowNativeInterop.fs"/>
         <Compile Include="WindowHandle.fs"/>
-        <Compile Include="WindowIcon.fs"/>
         <Compile Include="AppWindows.fs"/>
+        <Compile Include="AppWindowViewModel.fs"/>
         <Compile Include="MainWindowHelper.fs"/>
         <Folder Include="Images"/>
     </ItemGroup>

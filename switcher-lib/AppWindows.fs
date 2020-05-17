@@ -1,16 +1,14 @@
 ﻿module SwitcherLib.AppWindows
 
 open System.Diagnostics
-open System.Windows.Media
 open SwitcherLib.WindowHandle
-open SwitcherLib.WindowIcon
 
 type AppWindow =
     { Title: string
       Handle: WindowHandle
       ProcessId: int
       ProcessName: string
-      Icon: ImageSource }
+      ProcessExePath: string }
 
 let private createAppWindow (handle: WindowHandle) =
     let pid = handle.ProcessId()
@@ -20,7 +18,7 @@ let private createAppWindow (handle: WindowHandle) =
       Handle = handle
       ProcessId = pid
       ProcessName = appProcess.ProcessName
-      Icon = WindowIcon.get appProcess }
+      ProcessExePath = appProcess.Modules.[0].FileName }
 
 // Stole this from PowerToys
 let private isAltTabWorthy (handle: WindowHandle) =

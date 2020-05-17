@@ -8,7 +8,16 @@ namespace SwitcherApp
         public MainWindow()
         {
             InitializeComponent();
-            MainWindowHelper.configure(this, AppsGrid);
+            var factory = new AppWindowWidgetFactory();
+            MainWindowHelper.configure(this, Panel, factory);
+        }
+    }
+
+    internal class AppWindowWidgetFactory : MainWindowHelper.IAppWindowViewFactory
+    {
+        public UIElement Create(AppWindowViewModel viewModel)
+        {
+            return new AppWindowView(viewModel);
         }
     }
 }
