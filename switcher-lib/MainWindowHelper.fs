@@ -23,19 +23,27 @@ let private addColumn (grid: Grid) _ =
     grid.ColumnDefinitions.Add(newColumn ())
 
 let private addProcess (grid: Grid) (index: int) (app: AppWindow) =
+    let icon = Image()
+    icon.Source <- app.Icon
+    icon.Width <- 64.0
+    icon.Height <- 64.0
+
+    Grid.SetColumn(icon, index)
+    grid.Children.Add icon |> ignore
+
     let text = TextBlock()
     text.Text <- sprintf "%s\n%d - %s" app.Title app.ProcessId app.ProcessName
     text.Width <- cellWidth
     text.Padding <- Thickness(padding, 0.0, padding, 0.0)
     text.FontFamily <- FontFamily("Trebuchet MS")
     text.FontSize <- 14.0
-    text.TextAlignment <- TextAlignment.Center
     text.FontWeight <- FontWeight.FromOpenTypeWeight(600)
     text.Foreground <- SolidColorBrush(Color.FromScRgb(1.0f, 1.0f, 1.0f, 1.0f))
-    text.VerticalAlignment <- VerticalAlignment.Center
+    text.TextAlignment <- TextAlignment.Center
+    text.VerticalAlignment <- VerticalAlignment.Bottom
+    text.TextTrimming <- TextTrimming.CharacterEllipsis
 
     Grid.SetColumn(text, index)
-
     grid.Children.Add text |> ignore
 
 let configure (window: Window, grid: Grid) =

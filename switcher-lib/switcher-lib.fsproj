@@ -8,9 +8,15 @@
 
     <ItemGroup>
         <Compile Include="WindowNativeInterop.fs"/>
-        <Compile Include="WindowHandle.fs" />
-        <Compile Include="AppWindows.fs" />
-        <Compile Include="MainWindowHelper.fs" />
+        <Compile Include="WindowHandle.fs"/>
+        <Compile Include="WindowIcon.fs"/>
+        <Compile Include="AppWindows.fs"/>
+        <Compile Include="MainWindowHelper.fs"/>
+        <Folder Include="Images"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="System.Drawing.Common" Version="5.0.0-preview.3.20214.6"/>
     </ItemGroup>
 
 </Project>
