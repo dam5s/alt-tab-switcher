@@ -25,11 +25,17 @@ let private isAltTabWorthy (handle: WindowHandle) =
     handle.IsWindow() && handle.IsVisible() && (not (handle.IsToolWindow()) || handle.IsAppWindow())
     && not (handle.TaskListDeleted()) && handle.ClassName() <> "Windows.UI.Core.CoreWindow" && handle.Text() <> ""
 
-let private isNotApplicationFrameHost app =
-    app.ProcessName <> "ApplicationFrameHost"
+let private replaceApplicationFrameHost app =
+    match app.ProcessName with
+    | "ApplicationFrameHost" ->
+        app.Handle.Children()
+        |> List.tryHead
+        |> Option.map createAppWindow
 
+    | _ -> Some app
+    
 let get () =
     WindowHandle.all ()
     |> List.filter isAltTabWorthy
     |> List.map createAppWindow
-    |> List.filter isNotApplicationFrameHost
+    |> List. choose replaceApplicationFrameHost

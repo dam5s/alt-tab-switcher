@@ -15,9 +15,6 @@ namespace SwitcherApp
 
     internal class AppWindowWidgetFactory : MainWindowHelper.IAppWindowViewFactory
     {
-        public UIElement Create(AppWindowViewModel viewModel)
-        {
-            return new AppWindowView(viewModel);
-        }
+        public UIElement Create(AppWindowViewModel viewModel) => new AppWindowView(viewModel);
     }
 }

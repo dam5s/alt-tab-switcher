@@ -38,6 +38,20 @@ type WindowHandle(ptr: IntPtr) =
         Native.GetWindowLong(ptr, Native.GWL_EXSTYLE) &&& Native.WS_EX_TOOLWINDOW = Native.WS_EX_TOOLWINDOW
 
     member this.TaskListDeleted() = Native.GetProp(ptr, "ITaskList_Deleted") <> IntPtr.Zero
+    
+    member this.IsForeground() = ptr = Native.GetForegroundWindow()
+    
+    member this.Children() =
+        let mutable windows: WindowHandle list = []
+
+        let proc =
+            fun ptr _ ->
+                windows <- WindowHandle ptr :: windows
+                Native.EnumWindowsContinueEnumerating
+
+        Native.EnumChildWindows(ptr, Native.CallBackPtr(proc), IntPtr.Zero) |> ignore
+
+        windows
 
     member this.SwitchTo() = Native.SwitchToThisWindow(ptr, true) |> ignore
 
@@ -51,6 +65,6 @@ module WindowHandle =
                 windows <- WindowHandle ptr :: windows
                 Native.EnumWindowsContinueEnumerating
 
-        Native.EnumWindows(Native.EnumWindowsProc(proc), IntPtr.Zero) |> ignore
+        Native.EnumWindows(Native.CallBackPtr(proc), IntPtr.Zero) |> ignore
 
         windows
