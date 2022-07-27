@@ -1,8 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "switcher-app", "switcher-app\switcher-app.csproj", "{3E656D77-6ED7-4149-BD7D-D032F1FB826A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SwitcherApp", "SwitcherApp\SwitcherApp.csproj", "{3E656D77-6ED7-4149-BD7D-D032F1FB826A}"
 EndProject
-Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "switcher-lib", "switcher-lib\switcher-lib.fsproj", "{3A99306D-50CB-4BE4-9102-5DD71649A004}"
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "SwitcherLib", "SwitcherLib\SwitcherLib.fsproj", "{3A99306D-50CB-4BE4-9102-5DD71649A004}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

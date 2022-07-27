@@ -2,12 +2,12 @@
 
     <PropertyGroup>
         <OutputType>WinExe</OutputType>
-        <TargetFramework>netcoreapp5.0</TargetFramework>
+        <TargetFramework>net6.0-windows</TargetFramework>
         <UseWPF>true</UseWPF>
         <RootNamespace>SwitcherApp</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\switcher-lib\switcher-lib.fsproj" />
+      <ProjectReference Include="..\SwitcherLib\SwitcherLib.fsproj" />
     </ItemGroup>
 </Project>
